@@ -1,0 +1,191 @@
+import 'package:filler_up/colors/color_util.dart';
+import 'package:filler_up/screens/boat.dart';
+import 'package:filler_up/screens/equipment.dart';
+import 'package:filler_up/screens/heating.dart';
+import 'package:filler_up/screens/login.dart';
+
+import 'package:filler_up/widgets/app_bar.dart';
+import 'package:filler_up/widgets/inline.dart';
+import 'package:filler_up/widgets/main_box.dart';
+
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+
+void main() {
+  runApp(const MyApp());
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
+}
+
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return ScreenUtilInit(
+        designSize: const Size(375, 812),
+        builder: (context, _) => MaterialApp(
+              title: 'Filler Up',
+              debugShowCheckedModeBanner: false,
+              theme: ThemeData(
+                fontFamily: 'Gowtham',
+                primarySwatch: Colors.blue,
+              ),
+              home: const SplashScreen(),
+            ));
+  }
+}
+
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
+
+  @override
+  State<SplashScreen> createState() => _SplashScreenState();
+}
+
+class _SplashScreenState extends State<SplashScreen> {
+  @override
+  void initState() {
+    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+      await Future.delayed(const Duration(milliseconds: 3000));
+      Navigator.pushReplacement(
+          context, CupertinoPageRoute(builder: (context) => const Login()));
+    });
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        padding: EdgeInsets.all(32.sp),
+        child: Center(
+          child: SvgPicture.asset(
+            'lib/assets/logo/logo.svg',
+          ),
+        ),
+        decoration: const BoxDecoration(color: ColorUtil.primaryColor));
+  }
+}
+
+class MyHomePage extends StatefulWidget {
+  const MyHomePage({Key? key, required this.title}) : super(key: key);
+
+  final String title;
+
+  @override
+  State<MyHomePage> createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  final List<String> myProducts = ['EQUIPMENT', 'BOAT', 'Home'];
+  final List<String> images = ['equip', 'boat', 'home'];
+  final List<dynamic> positions = [
+    [25.0, 0.0],
+    [0.0, 35.0],
+    [0.0, 25.0]
+  ];
+
+  int isSelected = -1;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  Future<void> routeTo(int index) async {
+    switch (index) {
+      case 0:
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => const Equipment()));
+        break;
+      case 1:
+        Navigator.push(
+            context, CupertinoPageRoute(builder: (context) => const Boat()));
+        break;
+      case 2:
+        Navigator.push(context,
+            CupertinoPageRoute(builder: (context) => const HeatingOil()));
+        break;
+      default:
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MainBoxWidget(
+        patternBackground: true,
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+          TopAppBar(
+              isImage: true,
+              image: SvgPicture.asset('lib/assets/icons/menu.svg')),
+          const InlineWidget(),
+          gridWidget
+        ]));
+  }
+
+  Widget get gridWidget {
+    return Expanded(
+      child: GridView.builder(
+          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
+              maxCrossAxisExtent: 150.w,
+              mainAxisExtent: 200.h,
+              childAspectRatio: 2,
+              crossAxisSpacing: 20.w,
+              mainAxisSpacing: 30.h),
+          itemCount: myProducts.length,
+          itemBuilder: (BuildContext ctx, index) {
+            return GestureDetector(
+              onTap: () {
+                setState(() {
+                  isSelected = index;
+                });
+                routeTo(index);
+              },
+              child: Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.all(4.sp),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    Stack(
+                      children: [
+                        SvgPicture.asset(
+                            'lib/assets/icons/${images[index]}.svg'),
+                        Positioned(
+                          left: positions[index][1],
+                          top: positions[index][0],
+                          child: CircleAvatar(
+                            radius: 11.5.r,
+                            backgroundColor: ColorUtil.orangeTransparent,
+                          ),
+                        )
+                      ],
+                    ),
+                    Text(myProducts[index],
+                        style: TextStyle(
+                            fontSize: 16.sp,
+                            fontFamily: 'Gotham',
+                            fontWeight: FontWeight.w700,
+                            color: ColorUtil.primaryColor)),
+                  ],
+                ),
+                decoration: BoxDecoration(
+                    boxShadow: const [
+                      BoxShadow(
+                          color: ColorUtil.lightPrimaryColor,
+                          offset: Offset(2.5, 2.25),
+                          spreadRadius: 0.75,
+                          blurRadius: 0)
+                    ],
+                    color: isSelected == index
+                        ? ColorUtil.tabHighlightColor
+                        : ColorUtil.tabWhiteColor,
+                    borderRadius: BorderRadius.circular(16.r)),
+              ),
+            );
+          }),
+    );
+  }
+}
