@@ -16,7 +16,7 @@ class Contact extends StatelessWidget {
   Widget build(BuildContext context) {
     return MainBoxWidget(
         patternBackground: true,
-        child: Column(children: [
+        child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const TopAppBar(),
           const InlineWidget(text: 'Contact Us', isSubText: false),
           ListWidget(
@@ -44,34 +44,34 @@ class Contact extends StatelessWidget {
           ),
           SizedBox(height: 10.h),
           InlineWidget(
-            text: 'Operating Hours',
-            textStyle: TextStyle(
-                fontSize: 20.sp,
-                fontFamily: 'Gotham',
-                fontWeight: FontWeight.w600,
-                color: Colors.white),
-            subText: 'Monday - Saturday 8.00 am - 6.00 pm',
-            subTextStyle: TextStyle(
-                fontSize: 14.sp,
-                fontFamily: 'Gotham',
-                fontWeight: FontWeight.w600,
-                color: ColorUtil.lightPrimaryColor),
-          ),
+              text: 'Operating Hours',
+              textStyle: TextStyle(
+                  fontSize: 20.sp,
+                  fontFamily: 'Gotham',
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white),
+              isSubText: false,
+              color: ColorUtil.lightPrimaryColor),
           SizedBox(
             height: 10.h,
           ),
-          Row(
-            children: [
-              Text(' Sunday - 9.00 am - 5.00 pm',
-                  style: TextStyle(
-                      fontSize: 14.sp,
-                      fontFamily: 'Gotham',
-                      fontWeight: FontWeight.w600,
-                      color: ColorUtil.lightPrimaryColor)),
-            ],
-          ),
+          Text('Monday - Saturday 8.00 am - 6.00 pm',
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontFamily: 'Gotham',
+                  fontWeight: FontWeight.w600,
+                  color: ColorUtil.lightPrimaryColor)),
           SizedBox(
-            height: 40.h,
+            height: 10.h,
+          ),
+          Text(' Sunday - 9.00 am - 5.00 pm',
+              style: TextStyle(
+                  fontSize: 14.sp,
+                  fontFamily: 'Gotham',
+                  fontWeight: FontWeight.w600,
+                  color: ColorUtil.lightPrimaryColor)),
+          SizedBox(
+            height: 34.h,
           ),
           InlineWidget(
               text: 'Social Media',
@@ -81,19 +81,26 @@ class Contact extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: Colors.white),
               isSubText: false),
-          ListWidget(
-            iconWidth: 35.w,
-            iconBgColor: const Color.fromRGBO(34, 142, 154, 1),
-            icon: SvgPicture.asset(
-              'lib/assets/social/fb.svg',
-              color: Colors.white,
+          SizedBox(height: 10.h),
+          Row(children: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
+              margin: EdgeInsets.only(right: 10.w),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(8.r)),
+                color: Color.fromARGB(5, 34, 142, 154),
+              ),
+              child: SvgPicture.asset(
+                'lib/assets/social/fb.svg',
+                color: Colors.white,
+              ),
             ),
-            text: 'Facebook',
-            textStyle: const TextStyle(
-                fontFamily: 'Gotham',
-                fontWeight: FontWeight.w600,
-                color: ColorUtil.lightPrimaryColor),
-          ),
+            const Text('Facebook',
+                style: TextStyle(
+                    fontWeight: FontWeight.w600,
+                    fontFamily: 'Gotham',
+                    color: ColorUtil.lightPrimaryColor))
+          ]),
           SizedBox(height: 10.h),
           Row(children: [
             Container(

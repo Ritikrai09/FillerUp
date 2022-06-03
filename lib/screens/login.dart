@@ -10,6 +10,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../widgets/screen.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -33,7 +35,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return MainBoxWidget(
       child: Container(
-        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 72.h),
+        margin: EdgeInsets.symmetric(horizontal: 24.w, vertical: 65.h),
         child: Column(
           children: [
             const InlineWidget(
@@ -45,13 +47,21 @@ class _LoginState extends State<Login> {
             TextFieldWidget(
               controller: nameController,
               hint: 'Email Address',
-              size: 14.sp,
+              size: ScreenSize.isTabletWidth(context)
+                  ? 12.sp
+                  : ScreenSize.isVerySmall(context)
+                      ? 12.sp
+                      : 16.sp,
             ),
             TextFieldWidget(
                 controller: passController,
                 hint: 'Enter your password',
                 hide: _isObscure,
-                size: 14.sp,
+                size: ScreenSize.isTabletWidth(context)
+                    ? 12.sp
+                    : ScreenSize.isVerySmall(context)
+                        ? 12.sp
+                        : 16.sp,
                 icon: IconButton(
                     icon: Icon(
                       _isObscure ? Icons.remove_red_eye : Icons.visibility_off,
@@ -71,10 +81,12 @@ class _LoginState extends State<Login> {
                             )));
               },
               text: 'Login',
-              style: TextStyle(fontSize: 18.sp, fontFamily: 'Gotham'),
+              style: TextStyle(
+                  fontSize: ScreenSize.isTabletWidth(context) ? 12.sp : 18.sp,
+                  fontFamily: 'Gotham-Bold'),
               color: ColorUtil.primaryOrangeColor,
             ),
-            SizedBox(height: 25.h),
+            SizedBox(height: 24.h),
             const DividerWidget(),
             Container(
               margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 40.h),
@@ -82,10 +94,9 @@ class _LoginState extends State<Login> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   SocialWidget(
-                    image: 'lib/assets/social/fb.svg',
-                    color: Colors.blue,
-                    isColored: true,
-                  ),
+                      image: 'lib/assets/social/fb.svg',
+                      color: Colors.blue,
+                      isColored: true),
                   SocialWidget(image: 'lib/assets/social/Google1.svg')
                 ],
               ),

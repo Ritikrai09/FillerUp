@@ -10,6 +10,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
+import '../widgets/screen.dart';
+
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
 
@@ -31,13 +33,7 @@ class _ProfileState extends State<Profile> {
     mobileController = TextEditingController();
     emailController = TextEditingController();
     passController = TextEditingController();
-
     super.initState();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
   }
 
   @override
@@ -45,124 +41,156 @@ class _ProfileState extends State<Profile> {
     return MainBoxWidget(
       isScrollable: true,
       patternBackground: true,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          TopAppBar(
-            color: Colors.transparent,
-            leadingHeight: 42.h,
-            leadingWidth: 42.w,
-            onLeadingPressed: () {
-              Navigator.pop(context);
-            },
-            leading: SvgPicture.asset(
-              'lib/assets/icons/arrow.svg',
+      child: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            TopAppBar(
+              color: Colors.transparent,
+              onLeadingPressed: () {
+                Navigator.pop(context);
+              },
+              leading: SvgPicture.asset(
+                'lib/assets/icons/arrow.svg',
+              ),
             ),
-          ),
-          const InlineWidget(text: 'Edit Account', isSubText: false),
-          Wrap(
-            children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
+            const InlineWidget(text: 'Edit Account', isSubText: false),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  width: ScreenSize.isVerySmall(context)
+                      ? MediaQuery.of(context).size.width * 0.25
+                      : MediaQuery.of(context).size.width * 0.3,
+                  height: ScreenSize.isSmall(context)
+                      ? MediaQuery.of(context).size.height * 0.22
+                      : MediaQuery.of(context).size.height * 0.18,
+                  child: Stack(
                     children: [
                       SplashIcon(
-                        size: 115.sp,
+                        height: ScreenSize.isSmall(context)
+                            ? ScreenSize.isVerySmall(context)
+                                ? MediaQuery.of(context).size.height * 0.25
+                                : MediaQuery.of(context).size.height * 0.30
+                            : 86.sp,
+                        size: ScreenSize.isSmall(context)
+                            ? 110.sp
+                            : ScreenSize.isSmallHeight(context)
+                                ? 115.sp
+                                : ScreenSize.isTabletWidth(context)
+                                    ? 60.sp
+                                    : 100.sp,
                         icon: Image.asset('lib/assets/icons/avt-8.png'),
                       ),
                       Positioned(
-                        bottom: 25.h,
-                        right: 0.w,
+                        bottom: ScreenSize.isTabletHeight(context)
+                            ? MediaQuery.of(context).size.height * 0.050.h
+                            : ScreenSize.isVerySmall(context)
+                                ? MediaQuery.of(context).size.height * 0.095.h
+                                : MediaQuery.of(context).size.height * 0.030.h,
+                        right: ScreenSize.isSmall(context)
+                            ? MediaQuery.of(context).size.height * 0.050.w
+                            : ScreenSize.isTabletHeight(context)
+                                ? MediaQuery.of(context).size.width * 0.120
+                                : ScreenSize.isSmallWidth(context)
+                                    ? MediaQuery.of(context).size.width *
+                                        0.010.w
+                                    : MediaQuery.of(context).size.width *
+                                        0.050.w,
                         child: CircleAvatar(
-                          radius: 18.sp,
+                          backgroundColor: Colors.transparent,
+                          radius: ScreenSize.isSmall(context)
+                              ? ScreenSize.isSmallWidth(context)
+                                  ? 16.sp
+                                  : 14.sp
+                              : 18.sp,
                           child: SplashIcon(
-                            materialColor: ColorUtil.tabWhiteColor,
+                            materialColor: ColorUtil.primaryColor,
+                            color: Color.fromRGBO(255, 255, 255, 0.6),
                             onPressed: () {},
-                            icon: SvgPicture.asset('lib/assets/icons/edit.svg',
-                                color: ColorUtil.primaryColor),
+                            icon: SvgPicture.asset(
+                              'lib/assets/icons/edit.svg',
+                            ),
                           ),
                         ),
                       )
                     ],
                   ),
-                ],
-              ),
-              TextFieldWidget(
-                height: 46.h,
-                width: 335.w,
-                margin: EdgeInsets.only(bottom: 0.h),
-                controller: fnameController,
-                isLabelled: true,
-                label: 'First Name',
-                hint: 'Zack',
-              ),
-              TextFieldWidget(
-                height: 46.h,
-                width: 335.w,
-                margin: EdgeInsets.only(bottom: 12.h),
-                controller: lnameController,
-                isLabelled: true,
-                label: 'Last Name',
-                hint: 'Poster',
-              ),
-              const Text(
-                'Mobile No.',
-                style: TextStyle(
-                    fontFamily: 'Gotham',
-                    fontWeight: FontWeight.w500,
-                    color: ColorUtil.lightPrimaryColor),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  DropList(
-                      margin:
-                          EdgeInsets.symmetric(horizontal: 4.w, vertical: 7.h),
-                      width: 64.w,
-                      image: 'lib/assets/icons/usa.svg',
-                      dropList: const ['+91', '+24', '+44']),
-                  SizedBox(width: 15.w),
-                  TextFieldWidget(
-                    height: 46.h,
-                    width: 239.w,
-                    keyboard: TextInputType.number,
-                    margin: EdgeInsets.only(bottom: 0.h),
-                    controller: mobileController,
-                    hint: '+1(229) 296-6824',
-                  ),
-                ],
-              ),
-              TextFieldWidget(
-                height: 46.h,
-                width: 335.w,
-                margin: EdgeInsets.only(bottom: 0.h),
-                controller: emailController,
-                isLabelled: true,
-                label: 'Email Address',
-                hint: 'Zack@fillerup.com',
-              ),
-              TextFieldWidget(
-                size: 14.sp,
-                margin: EdgeInsets.only(bottom: 16.h),
-                controller: passController,
-                isLabelled: true,
-                label: 'Password',
-                hint: '**********',
-              ),
-              ButtonWidget(
-                style: TextStyle(
-                  fontSize: 16.sp,
-                  fontFamily: 'Gotham',
-                  fontWeight: FontWeight.w600,
                 ),
-                onPressed: () {},
-                text: 'Update Profile',
-              )
-            ],
-          )
-        ],
+              ],
+            ),
+            TextFieldWidget(
+              width: 335.w,
+              margin: EdgeInsets.only(bottom: 0.h),
+              controller: fnameController,
+              isLabelled: true,
+              label: 'First Name',
+              hint: 'Zack',
+            ),
+            TextFieldWidget(
+              width: 335.w,
+              margin: EdgeInsets.only(bottom: 12.h),
+              controller: lnameController,
+              isLabelled: true,
+              label: 'Last Name',
+              hint: 'Poster',
+            ),
+            Text(
+              'Mobile No.',
+              style: TextStyle(
+                  fontSize: ScreenSize.isTabletWidth(context) ? 10.sp : 14.sp,
+                  fontFamily: 'Gotham',
+                  fontWeight: FontWeight.w500,
+                  color: ColorUtil.lightPrimaryColor),
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                DropList(
+                    initialValue: '+91',
+                    margin:
+                        EdgeInsets.symmetric(horizontal: 4.w, vertical: 3.h),
+                    width: 64.w,
+                    image: 'lib/assets/icons/usa.svg',
+                    dropList: const ['+91', '+24', '+44']),
+                SizedBox(width: 15.w),
+                TextFieldWidget(
+                  width: 239.w,
+                  keyboard: TextInputType.number,
+                  margin: EdgeInsets.only(bottom: 0.h),
+                  controller: mobileController,
+                  hint: '+1(229) 296-6824',
+                ),
+              ],
+            ),
+            TextFieldWidget(
+              width: 330.w,
+              margin: EdgeInsets.only(bottom: 0.h),
+              controller: emailController,
+              isLabelled: true,
+              label: 'Email Address',
+              hint: 'Zack@fillerup.com',
+            ),
+            TextFieldWidget(
+              size: 14.sp,
+              margin: EdgeInsets.only(bottom: 16.h),
+              controller: passController,
+              isLabelled: true,
+              label: 'Password',
+              hint: '**********',
+            ),
+            ButtonWidget(
+              style: TextStyle(
+                fontSize: 16.sp,
+                fontFamily: 'Gotham',
+                fontWeight: FontWeight.w600,
+              ),
+              onPressed: () {},
+              text: 'Update Profile',
+            )
+          ],
+        ),
       ),
     );
   }

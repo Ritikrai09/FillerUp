@@ -12,6 +12,7 @@ import '../widgets/checkbox.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/inline.dart';
 import '../widgets/main_box.dart';
+import '../widgets/screen.dart';
 
 class Terminal extends StatefulWidget {
   const Terminal({Key? key}) : super(key: key);
@@ -45,7 +46,14 @@ class _TerminalState extends State<Terminal> {
         child: Column(children: [
           const TopAppBar(),
           const InlineWidget(text: 'Equipment / Terminal', isSubText: false),
-          const DropList(
+          DropList(
+            height: ScreenSize.isSmall(context)
+                ? ScreenSize.isVerySmall(context)
+                    ? MediaQuery.of(context).size.height * 0.076
+                    : MediaQuery.of(context).size.height * 0.067
+                : ScreenSize.isTabletWidth(context)
+                    ? MediaQuery.of(context).size.height * 0.075
+                    : MediaQuery.of(context).size.height * 0.064,
             text: 'Quantity',
             dropList: ['100', '200', '300', '400'],
           ),
@@ -73,12 +81,14 @@ class _TerminalState extends State<Terminal> {
                             data: Theme.of(context).copyWith(
                               colorScheme: const ColorScheme.light(
                                 primary: ColorUtil.primaryColor, // <-- SEE HERE
+
                                 onPrimary: Colors.white, // <-- SEE HERE
                                 onSurface: ColorUtil
                                     .overlayPrimaryColor, // <-- SEE HERE
                               ),
                               textButtonTheme: TextButtonThemeData(
                                 style: TextButton.styleFrom(
+                                  textStyle: TextStyle(fontSize: 12.sp),
                                   primary: ColorUtil
                                       .primaryColor, // button text color
                                 ),
@@ -103,18 +113,22 @@ class _TerminalState extends State<Terminal> {
             children: [
               TextFieldWidget(
                   readOnly: true,
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 3.h),
-                  width: 158.w,
-                  height: 38.h,
+                  size: ScreenSize.isSmall(context) ? 14.sp : 14.sp,
+                  textAlign: TextAlign.center,
+                  padding: ScreenSize.isSmall(context)
+                      ? EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h)
+                      : EdgeInsets.symmetric(horizontal: 2.w, vertical: 3.h),
+                  width: MediaQuery.of(context).size.width * 0.405,
                   hint: '8 AM to 12 PM',
+                  isIcon: false,
                   controller: controller),
               TextFieldWidget(
-                  padding:
-                      EdgeInsets.symmetric(horizontal: 24.w, vertical: 3.h),
-                  width: 158.w,
-                  height: 38.h,
+                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 3.h),
+                  width: MediaQuery.of(context).size.width * 0.405,
                   readOnly: true,
+                  size: ScreenSize.isSmall(context) ? 14.sp : 14.sp,
+                  textAlign: TextAlign.center,
+                  isIcon: false,
                   hint: '4 PM to 12 AM',
                   controller: controller),
             ],

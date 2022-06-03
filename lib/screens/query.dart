@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import '../widgets/screen.dart';
+
 class Query extends StatefulWidget {
   const Query({Key? key}) : super(key: key);
 
@@ -29,19 +31,22 @@ class _QueryState extends State<Query> {
   int selectIndex = -1;
   @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return MainBoxWidget(
       patternBackground: true,
       child: Column(
         children: [
           const TopAppBar(),
-          SizedBox(height: 10.h),
+          SizedBox(height: ScreenSize.isSmall(context) ? 0.h : 10.h),
           SizedBox(
             width: 350.w,
             child: const InlineWidget(
-                text: 'Frequently Asked Questions', isSubText: false),
+                align: Alignment.center,
+                text: 'Frequently Asked Questions',
+                isSubText: false),
           ),
           SizedBox(
-            height: 20.h,
+            height: ScreenSize.isSmall(context) ? 15.h : 18.h,
           ),
           SizedBox(
             width: 360.w,
@@ -50,7 +55,8 @@ class _QueryState extends State<Query> {
               children: [
                 Text('Welcome to our support center. Here you can',
                     style: TextStyle(
-                        fontSize: 14.5.sp,
+                        fontSize:
+                            ScreenSize.isVerySmall(context) ? 13.sp : 14.5.sp,
                         fontFamily: 'Gotham',
                         color: Colors.white)),
                 SizedBox(
@@ -58,7 +64,8 @@ class _QueryState extends State<Query> {
                 ),
                 Text('find the most frequently asked questions',
                     style: TextStyle(
-                        fontSize: 14.5.sp,
+                        fontSize:
+                            ScreenSize.isVerySmall(context) ? 13.sp : 14.5.sp,
                         fontFamily: 'Gotham',
                         color: Colors.white))
               ],
@@ -66,8 +73,16 @@ class _QueryState extends State<Query> {
           ),
           Container(
             constraints: const BoxConstraints(maxHeight: double.infinity),
-            height: 560.h,
+            height: ScreenSize.isSmall(context)
+                ? ScreenSize.isVerySmall(context)
+                    ? screenSize.height * 0.60
+                    : screenSize.height * 0.55
+                : screenSize.height * 0.55,
+            margin: EdgeInsets.only(top: 10.h),
+            padding: EdgeInsets.all(5.sp),
             child: ListView.builder(
+              shrinkWrap: true,
+              scrollDirection: Axis.vertical,
               itemCount: 5,
               itemBuilder: (context, index) => Wrap(
                 children: [
@@ -88,12 +103,16 @@ class _QueryState extends State<Query> {
 
   Widget ExpandList(
       int index, bool isExpand, VoidCallback onPressed, String child) {
+    var screenSize = MediaQuery.of(context).size;
     return Wrap(
       children: [
         Container(
           width: 335.w,
+          height: ScreenSize.isVerySmall(context)
+              ? screenSize.height * 0.1
+              : screenSize.height * 0.15,
           margin: EdgeInsets.symmetric(vertical: 5.h),
-          padding: EdgeInsets.symmetric(horizontal: 5.w),
+          padding: EdgeInsets.symmetric(horizontal: 5.w, vertical: 4.h),
           child: Column(
             children: [
               Container(
@@ -109,27 +128,49 @@ class _QueryState extends State<Query> {
                   children: [
                     Expanded(
                       child: Padding(
-                        padding: const EdgeInsets.all(8.0),
+                        padding: ScreenSize.isVerySmall(context)
+                            ? EdgeInsets.all(5.0)
+                            : EdgeInsets.all(8.0),
                         child: Text('What is Lorem Ipsum..',
                             maxLines: 3,
                             style: TextStyle(
-                                fontSize: 14.sp,
+                                fontSize: ScreenSize.isVerySmall(context)
+                                    ? 12.sp
+                                    : 14.sp,
                                 fontFamily: 'Gotham',
                                 fontWeight: FontWeight.w600,
                                 color: ColorUtil.primaryColor)),
                       ),
                     ),
                     isExpand
-                        ? IconButton(
-                            onPressed: onPressed,
-                            icon: SvgPicture.asset('lib/assets/icons/down.svg'))
-                        : Transform.rotate(
-                            angle: math.pi / 1.0,
+                        ? Transform.scale(
+                            scale: ScreenSize.isSmall(context)
+                                ? 0.7
+                                : ScreenSize.isSmallWidth(context)
+                                    ? 0.705
+                                    : ScreenSize.isTabletWidth(context)
+                                        ? 0.735
+                                        : 1.0,
                             child: IconButton(
                                 onPressed: onPressed,
                                 icon: SvgPicture.asset(
                                     'lib/assets/icons/down.svg')),
                           )
+                        : Transform.scale(
+                            scale: ScreenSize.isSmall(context)
+                                ? 0.7
+                                : ScreenSize.isSmallWidth(context)
+                                    ? 0.705
+                                    : ScreenSize.isTabletWidth(context)
+                                        ? 0.735
+                                        : 1.0,
+                            child: Transform.rotate(
+                              angle: math.pi / 1.0,
+                              child: IconButton(
+                                  onPressed: onPressed,
+                                  icon: SvgPicture.asset(
+                                      'lib/assets/icons/down.svg')),
+                            ))
                   ],
                 ),
               ),
