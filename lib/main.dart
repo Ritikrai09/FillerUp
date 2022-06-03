@@ -14,6 +14,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
+import 'widgets/screen.dart';
+
 void main() {
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
@@ -130,12 +132,14 @@ class _MyHomePageState extends State<MyHomePage> {
       child: GridView.builder(
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 150.w,
-              mainAxisExtent: 200.h,
+              mainAxisExtent: ScreenSize.isSmall(context) ? 210.h : 200.h,
               childAspectRatio: 2,
               crossAxisSpacing: 20.w,
               mainAxisSpacing: 30.h),
+          shrinkWrap: true,
           itemCount: myProducts.length,
           itemBuilder: (BuildContext ctx, index) {
+            var screenSize = MediaQuery.of(context).size;
             return GestureDetector(
               onTap: () {
                 setState(() {
@@ -144,20 +148,44 @@ class _MyHomePageState extends State<MyHomePage> {
                 routeTo(index);
               },
               child: Container(
+                height: ScreenSize.isSmall(context)
+                    ? ScreenSize.isVerySmall(context)
+                        ? screenSize.height * 0.197
+                        : screenSize.height * 0.167
+                    : screenSize.height * 0.207,
                 alignment: Alignment.center,
                 margin: EdgeInsets.all(4.sp),
+                padding: ScreenSize.isVerySmall(context)
+                    ? EdgeInsets.only(bottom: 10.h)
+                    : EdgeInsets.all(0.sp),
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: ScreenSize.isVerySmall(context)
+                      ? MainAxisAlignment.center
+                      : MainAxisAlignment.spaceEvenly,
                   children: [
                     Stack(
                       children: [
-                        SvgPicture.asset(
-                            'lib/assets/icons/${images[index]}.svg'),
+                        Transform.scale(
+                          scale: ScreenSize.isSmall(context)
+                              ? ScreenSize.isVerySmall(context)
+                                  ? 0.6.sp
+                                  : 0.8.sp
+                              : ScreenSize.isSmallWidth(context)
+                                  ? 0.75.sp
+                                  : ScreenSize.isTabletWidth(context)
+                                      ? 0.69.sp
+                                      : 1.0.sp,
+                          child: SvgPicture.asset(
+                            'lib/assets/icons/${images[index]}.svg',
+                          ),
+                        ),
                         Positioned(
                           left: positions[index][1],
                           top: positions[index][0],
                           child: CircleAvatar(
-                            radius: 11.5.r,
+                            radius: ScreenSize.isVerySmall(context)
+                                ? 13.5.r
+                                : 11.5.r,
                             backgroundColor: ColorUtil.orangeTransparent,
                           ),
                         )
@@ -165,7 +193,13 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                     Text(myProducts[index],
                         style: TextStyle(
-                            fontSize: 16.sp,
+                            fontSize: ScreenSize.isSmall(context)
+                                ? 14.sp
+                                : ScreenSize.isTabletWidth(context)
+                                    ? ScreenSize.isSmallWidth(context)
+                                        ? 11.sp
+                                        : 12.sp
+                                    : 16.sp,
                             fontFamily: 'Gotham',
                             fontWeight: FontWeight.w700,
                             color: ColorUtil.primaryColor)),

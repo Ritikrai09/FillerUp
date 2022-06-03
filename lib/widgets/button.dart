@@ -2,6 +2,8 @@ import 'package:filler_up/colors/color_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import 'screen.dart';
+
 class ButtonWidget extends StatelessWidget {
   final VoidCallback onPressed;
   final IconData? icon;
@@ -25,8 +27,11 @@ class ButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 320.w,
-      height: 55.h,
+      height: ScreenSize.isSmall(context)
+          ? MediaQuery.of(context).size.height * 0.084
+          : ScreenSize.isTabletWidth(context)
+              ? MediaQuery.of(context).size.height * 0.090
+              : MediaQuery.of(context).size.height * 0.068,
       decoration: ShapeDecoration(
           shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.all(Radius.circular(16.r)))),
@@ -36,10 +41,15 @@ class ButtonWidget extends StatelessWidget {
               Center(
                 child: Text(text!,
                     style: style ??
-                        const TextStyle(
-                            fontFamily: 'Gotham',
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold)),
+                        TextStyle(
+                          fontSize: ScreenSize.isTabletWidth(context)
+                              ? 12.sp
+                              : ScreenSize.isVerySmall(context)
+                                  ? 12.sp
+                                  : 16.sp,
+                          fontFamily: 'Gotham-Bold',
+                          color: Colors.white,
+                        )),
               ),
           style: ButtonStyle(
               shape: MaterialStateProperty.all<RoundedRectangleBorder>(
@@ -61,8 +71,7 @@ class ButtonWidget extends StatelessWidget {
               textStyle: MaterialStateProperty.all(TextStyle(
                   color: Colors.white,
                   fontSize: 18.sp,
-                  fontFamily: 'Gotham',
-                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Gotham-Bold',
                   letterSpacing: 0.5.sp)))),
     );
   }

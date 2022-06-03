@@ -3,12 +3,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../colors/color_util.dart';
+import 'screen.dart';
 
 // ignore: must_be_immutable
 class DropList extends StatefulWidget {
   final List<String>? dropList;
   final String? image;
-  final String? text;
+  final String? text, initialValue;
   final double? width, height;
 
   final EdgeInsetsGeometry? margin;
@@ -20,6 +21,7 @@ class DropList extends StatefulWidget {
       this.image,
       this.dropList,
       this.margin,
+      this.initialValue,
       this.text})
       : super(key: key);
 
@@ -29,7 +31,16 @@ class DropList extends StatefulWidget {
 
 class _DropListState extends State<DropList> {
   String? value;
-  String? value1;
+
+  @override
+  void initState() {
+    if (this.value != widget.initialValue) {
+      setState(() {
+        this.value = widget.initialValue;
+      });
+    }
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,24 +63,37 @@ class _DropListState extends State<DropList> {
                     child: Text(
                       widget.text ?? "How many gallons",
                       style: TextStyle(
+                          fontSize: ScreenSize.isSmall(context) ? 12.sp : 16.sp,
                           fontFamily: 'Gotham',
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[400]),
                     ),
                   ),
                   isExpanded: true,
-                  icon: const Icon(Icons.arrow_drop_down),
+                  icon: const FittedBox(
+                      fit: BoxFit.contain, child: Icon(Icons.arrow_drop_down)),
                   alignment: AlignmentDirectional.centerStart,
                   value: value,
                   items: widget.dropList!.map((String value) {
                     return DropdownMenuItem(
                         value: value,
                         child: SizedBox(
-                            width: MediaQuery.of(context).size.width,
-                            child: Text(value)));
+                            width: MediaQuery.of(context).size.width * 0.66,
+                            height: 30.h,
+                            child: Text(
+                              value,
+                              style: TextStyle(
+                                  height: ScreenSize.isTabletHeight(context)
+                                      ? 1.7.h
+                                      : 1.h,
+                                  fontSize: ScreenSize.isSmall(context)
+                                      ? 14.sp
+                                      : 16.sp,
+                                  color: ColorUtil.primaryColor),
+                            )));
                   }).toList(),
                   onChanged: (value) => setState(() {
-                    this.value = value;
+                    this.value = value ?? widget.initialValue;
                   }),
                 ),
               )
@@ -104,7 +128,7 @@ class _DropListState extends State<DropList> {
                         ));
                   }).toList(),
                   onChanged: (value) => setState(() {
-                    this.value = value;
+                    this.value = value ?? widget.initialValue;
                   }),
                 ),
               ));

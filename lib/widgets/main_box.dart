@@ -36,13 +36,16 @@ class MainBoxWidget extends StatelessWidget {
               slivers: [
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    width: 375.w,
-                    height: 812.h,
+                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height,
                     child: patternBackground
                         ? Design(
                             child: Container(
-                                margin:
-                                    EdgeInsets.fromLTRB(24.w, 60.h, 24.w, 0),
+                                margin: EdgeInsets.fromLTRB(
+                                    24.w,
+                                    MediaQuery.of(context).size.height * 0.068,
+                                    24.w,
+                                    0),
                                 child: child))
                         : Container(
                             child: child,

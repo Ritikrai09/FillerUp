@@ -1,3 +1,4 @@
+import 'package:filler_up/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -13,8 +14,10 @@ class SocialWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 50.w,
-      height: 50.h,
-      alignment: Alignment.centerRight,
+      height: ScreenSize.isSmall(context)
+          ? MediaQuery.of(context).size.height * 0.084
+          : MediaQuery.of(context).size.height * 0.064,
+      alignment: Alignment.center,
       padding: EdgeInsets.all(2.sp),
       decoration: BoxDecoration(
           color: Colors.white,

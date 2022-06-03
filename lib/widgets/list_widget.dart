@@ -3,8 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import '../colors/color_util.dart';
+import 'screen.dart';
 
-class ListWidget extends StatelessWidget {
+class ListWidget extends StatefulWidget {
   final double? width, height;
   final EdgeInsetsGeometry? margin;
   final VoidCallback? onTap;
@@ -39,11 +40,19 @@ class ListWidget extends StatelessWidget {
       : super(key: key);
 
   @override
+  State<ListWidget> createState() => _ListWidgetState();
+}
+
+class _ListWidgetState extends State<ListWidget> {
+  @override
   Widget build(BuildContext context) {
+    var screenSize = MediaQuery.of(context).size;
     return Container(
-      width: width ?? 335.w,
-      height: height ?? 50.h,
-      margin: margin ?? EdgeInsets.only(top: 15.h),
+      width: widget.width ?? 335.w,
+      height: widget.height,
+      margin: ScreenSize.isTabletWidth(context)
+          ? EdgeInsets.only(top: 0.h)
+          : widget.margin ?? EdgeInsets.only(top: 10.h),
       child: Material(
         color: Colors.transparent,
         child: Ink(
@@ -51,79 +60,114 @@ class ListWidget extends StatelessWidget {
               customBorder: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10.r),
               ),
-              onTap: onTap ?? () {},
-              child: Center(
-                  child: SizedBox(
-                width: width ?? 335.w,
-                height: 76.h,
+              onTap: widget.onTap ?? () {},
+              child: Container(
+                width: widget.width ?? 335.w,
+                height: ScreenSize.isSmall(context)
+                    ? ScreenSize.isTabletHeight(context)
+                        ? screenSize.height * 0.205
+                        : ScreenSize.isVerySmall(context)
+                            ? screenSize.height * 0.205
+                            : screenSize.height * 0.105
+                    : widget.height ?? screenSize.height * 0.094,
                 child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.start,
                     children: [
-                      isIcon
+                      widget.isIcon
                           ? Container(
-                              width: iconWidth ?? 47.w,
-                              height: iconWidth ?? 47.w,
-                              padding: EdgeInsets.all(10.sp),
+                              margin: EdgeInsets.only(top: 10.h),
+                              padding: ScreenSize.isSmall(context)
+                                  ? EdgeInsets.all(8.sp)
+                                  : ScreenSize.isSmallWidth(context)
+                                      ? EdgeInsets.all(8.sp)
+                                      : ScreenSize.isTabletWidth(context)
+                                          ? EdgeInsets.all(8.sp)
+                                          : EdgeInsets.all(10.sp),
                               decoration: BoxDecoration(
                                   borderRadius: BorderRadius.all(
-                                      Radius.circular(iconRadius ?? 8.sp)),
-                                  color: iconBgColor ?? Colors.transparent),
-                              child: icon ??
+                                      Radius.circular(
+                                          widget.iconRadius ?? 8.sp)),
+                                  color:
+                                      widget.iconBgColor ?? Colors.transparent),
+                              child: widget.icon ??
                                   SvgPicture.asset('lib/assets/icons/bell.svg',
                                       width: 20.w,
                                       height: 20.h,
-                                      color: isSeen
+                                      color: widget.isSeen
                                           ? ColorUtil.lightPrimaryColor
                                           : Colors.white))
                           : const SizedBox(),
                       SizedBox(width: 15.w),
                       Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: SizedBox(
-                              width: subTextWidth ?? 220.w,
-                              child: Column(
-                                mainAxisAlignment: isSubText
-                                    ? MainAxisAlignment.start
-                                    : MainAxisAlignment.center,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                      text ??
-                                          'Your order has been generated successfully.Please click...',
-                                      style: textStyle ??
-                                          TextStyle(
-                                              fontSize: 13.5.sp,
-                                              height: 1.4.h,
+                          SizedBox(
+                            width: widget.subTextWidth ?? 220.w,
+                            child: Column(
+                              mainAxisAlignment: widget.isSubText
+                                  ? MainAxisAlignment.start
+                                  : ScreenSize.isTabletWidth(context)
+                                      ? MainAxisAlignment.center
+                                      : MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                    widget.text ??
+                                        'Your order has been generated successfully.Please click...',
+                                    style: widget.textStyle ??
+                                        TextStyle(
+                                            fontSize: ScreenSize.isVerySmall(
+                                                    context)
+                                                ? 12.8.sp
+                                                : ScreenSize.isTabletWidth(
+                                                        context)
+                                                    ? 12.sp
+                                                    : ScreenSize.isTabletHeight(
+                                                            context)
+                                                        ? ScreenSize.isSmall(
+                                                                context)
+                                                            ? 10.sp
+                                                            : 14.sp
+                                                        : 13.5.sp,
+                                            height:
+                                                ScreenSize.isVerySmall(context)
+                                                    ? 3.h
+                                                    : ScreenSize.isTabletHeight(
+                                                            context)
+                                                        ? 1.8.h
+                                                        : 2.4.h,
+                                            fontFamily:
+                                                ScreenSize.isTabletWidth(
+                                                        context)
+                                                    ? 'Gotham'
+                                                    : 'Gotham-Bold',
+                                            letterSpacing: 0.3,
+                                            color: widget.isSeen
+                                                ? ColorUtil.lightPrimaryColor
+                                                : Colors.white)),
+                                widget.isSubText
+                                    ? SizedBox(
+                                        height: widget.sizeHeight ?? 10.h,
+                                      )
+                                    : const SizedBox(),
+                                widget.isSubText
+                                    ? Text('${widget.subText}',
+                                        style: widget.subTextStyle ??
+                                            TextStyle(
+                                              fontSize: 12.sp,
                                               fontFamily: 'Gotham',
-                                              fontWeight: FontWeight.w600,
-                                              color: isSeen
-                                                  ? ColorUtil.lightPrimaryColor
-                                                  : Colors.white)),
-                                  isSubText
-                                      ? SizedBox(
-                                          height: sizeHeight ?? 10.h,
-                                        )
-                                      : const SizedBox(),
-                                  isSubText
-                                      ? Text('$subText',
-                                          style: subTextStyle ??
-                                              TextStyle(
-                                                fontSize: 12.sp,
-                                                fontFamily: 'Gotham',
-                                                color:
-                                                    ColorUtil.lightPrimaryColor,
-                                              ))
-                                      : const SizedBox(),
-                                ],
-                              ),
+                                              color:
+                                                  ColorUtil.lightPrimaryColor,
+                                            ))
+                                    : const SizedBox(),
+                              ],
                             ),
                           )
                         ],
                       ),
                     ]),
-              ))),
+              )),
         ),
       ),
     );
