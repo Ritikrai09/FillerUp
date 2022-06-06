@@ -1,4 +1,5 @@
 import 'package:filler_up/colors/color_util.dart';
+import 'package:filler_up/config/common_size.dart';
 import 'package:filler_up/screens/boat.dart';
 import 'package:filler_up/screens/equipment.dart';
 import 'package:filler_up/screens/heating.dart';
@@ -51,7 +52,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: 3000));
       Navigator.pushReplacement(
           context, CupertinoPageRoute(builder: (context) => const Login()));
@@ -121,8 +122,10 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TopAppBar(
               isImage: true,
-              image: SvgPicture.asset('lib/assets/icons/menu.svg')),
+              image: SvgPicture.asset('lib/assets/icons/menu.svg',height: 20,width: 500,fit: BoxFit.fill,)),
+          SizedBox(height: defaultSize),
           const InlineWidget(),
+          SizedBox(height: defaultSize),
           gridWidget
         ]));
   }
@@ -130,6 +133,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget get gridWidget {
     return Expanded(
       child: GridView.builder(
+        padding: EdgeInsets.zero,
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 150.w,
               mainAxisExtent: ScreenSize.isSmall(context) ? 210.h : 200.h,

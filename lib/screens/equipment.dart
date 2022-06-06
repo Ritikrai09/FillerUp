@@ -1,4 +1,5 @@
 import 'package:filler_up/colors/color_util.dart';
+import 'package:filler_up/config/common_size.dart';
 import 'package:filler_up/widgets/app_bar.dart';
 import 'package:filler_up/widgets/inline.dart';
 import 'package:filler_up/widgets/main_box.dart';
@@ -23,11 +24,11 @@ class _EquipmentState extends State<Equipment> {
 
   @override
   Widget build(BuildContext context) {
-    var screenSize = MediaQuery.of(context).size;
     return MainBoxWidget(
         patternBackground: true,
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           const TopAppBar(),
+          SizedBox(height: defaultSize,),
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -46,6 +47,7 @@ class _EquipmentState extends State<Equipment> {
           ),
           Expanded(
             child: ListView.builder(
+              padding: EdgeInsets.zero,
                 itemCount: myProducts.length,
                 itemBuilder: (BuildContext ctx, index) {
                   return GestureDetector(
@@ -58,40 +60,24 @@ class _EquipmentState extends State<Equipment> {
                     child: FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Container(
-                        width: screenSize.width * 0.935,
-                        height: ScreenSize.isSmall(context)
-                            ? ScreenSize.isVerySmall(context)
-                                ? screenSize.height * 0.257
-                                : screenSize.height * 0.267
-                            : ScreenSize.isSmallWidth(context)
-                                ? screenSize.height * 0.287
-                                : ScreenSize.isTabletWidth(context)
-                                    ? screenSize.height * 0.267
-                                    : screenSize.height * 0.217,
+                        width: MediaQuery.of(context).size.width,
+                        padding: EdgeInsets.all(defaultSize*1.5),
                         alignment: Alignment.topCenter,
-                        margin: EdgeInsets.only(top: 5.sp),
+                        margin: EdgeInsets.only(top: 5.sp,bottom: defaultSize),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.spaceAround,
                           children: [
-                            Transform.scale(
-                              scale: ScreenSize.isSmall(context)
-                                  ? 0.7.sp
-                                  : ScreenSize.isSmallWidth(context)
-                                      ? 0.705.sp
-                                      : ScreenSize.isTabletWidth(context)
-                                          ? 0.735.sp
-                                          : 1.0.sp,
+                            SizedBox(
+                              height: 80,
+                              width: 150,
                               child: SvgPicture.asset(
-                                'lib/assets/icons/${images[index]}.svg',
+                                'lib/assets/icons/${images[index]}.svg',fit: BoxFit.contain,
                               ),
                             ),
+                            SizedBox(height: defaultSize*2,),
                             Text(myProducts[index],
                                 style: TextStyle(
-                                    fontSize: ScreenSize.isSmall(context)
-                                        ? 14.sp
-                                        : ScreenSize.isTabletWidth(context)
-                                            ? 12.sp
-                                            : 16.sp,
+                                    fontSize: defaultSize*1.2,
                                     fontWeight: FontWeight.bold,
                                     fontFamily: 'Gotham',
                                     height: ScreenSize.isVerySmall(context)

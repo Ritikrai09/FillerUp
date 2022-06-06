@@ -1,5 +1,6 @@
 import 'package:filler_up/colors/color_util.dart';
-import 'package:filler_up/screens/Contact.dart';
+import 'package:filler_up/config/common_size.dart';
+import 'package:filler_up/screens/contact.dart';
 import 'package:filler_up/screens/notification.dart';
 import 'package:filler_up/screens/orders.dart';
 import 'package:filler_up/screens/profile.dart';
@@ -58,8 +59,6 @@ class _MenuScreenState extends State<MenuScreen> {
             leading: SvgPicture.asset(
               'lib/assets/icons/arrow.svg',
             ),
-            leadingHeight: ScreenSize.isVerySmallWidth(context) ? 60.h : 42.w,
-            leadingWidth: ScreenSize.isVerySmallWidth(context) ? 60.w : 42.w,
             color: Colors.transparent,
             image: SvgPicture.asset(
               'lib/assets/icons/edit.svg',
@@ -80,7 +79,6 @@ class _MenuScreenState extends State<MenuScreen> {
                       : ScreenSize.isTabletWidth(context)
                           ? 15.sp
                           : 22.sp,
-                  height: ScreenSize.isVerySmall(context) ? 1.4.h : 1.h,
                   fontFamily: 'Gotham-Bold',
                   color: Colors.white),
               isSubText: false),
@@ -116,7 +114,7 @@ class _MenuScreenState extends State<MenuScreen> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              BoxWidget(
+              boxWidget(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -125,7 +123,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   },
                   text: 'Help',
                   image: 'help'),
-              BoxWidget(
+              boxWidget(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -134,7 +132,7 @@ class _MenuScreenState extends State<MenuScreen> {
                   },
                   text: 'wallet',
                   image: 'wallet'),
-              BoxWidget(
+              boxWidget(
                   onTap: () {
                     Navigator.push(
                         context,
@@ -145,13 +143,10 @@ class _MenuScreenState extends State<MenuScreen> {
                   image: 'trips')
             ],
           ),
-          SizedBox(
-            height: ScreenSize.isVerySmall(context)
-                ? screenSize.height * 0.32
-                : ScreenSize.isSmall(context)
-                    ? screenSize.height * 0.31
-                    : MediaQuery.of(context).size.height * 0.34,
+          SizedBox(height: defaultSize,),
+          Expanded(
             child: ListView.builder(
+              padding: EdgeInsets.zero,
                 itemCount: icons.length,
                 itemBuilder: (context, index) {
                   return ListWidget(
@@ -178,7 +173,7 @@ class _MenuScreenState extends State<MenuScreen> {
                     icon: Padding(
                       padding: EdgeInsets.only(left: 5.w),
                       child:
-                          SvgPicture.asset('lib/assets/icons/${icons[index]}'),
+                          SvgPicture.asset('lib/assets/icons/${icons[index]}',height: 20,width: 20),
                     ),
                     text: details[index],
                   );
@@ -189,73 +184,39 @@ class _MenuScreenState extends State<MenuScreen> {
     );
   }
 
-  Widget BoxWidget({required VoidCallback onTap, String? text, String? image}) {
-    var screenSize = MediaQuery.of(context).size;
-    return Transform.scale(
-      scale: ScreenSize.isSmall(context)
-          ? ScreenSize.isVerySmall(context)
-              ? 0.73
-              : 0.8
-          : ScreenSize.isTabletWidth(context)
-              ? 0.9
-              : 1.0,
+  Widget boxWidget({required VoidCallback onTap, String? text, String? image}) {
+    return Expanded(
       child: Container(
-        width: ScreenSize.isTabletWidth(context) ? 75.w : 100.w,
-        height: ScreenSize.isSmall(context)
-            ? ScreenSize.isVerySmall(context)
-                ? screenSize.height * 0.165
-                : screenSize.height * 0.142
-            : ScreenSize.isTabletWidth(context)
-                ? screenSize.height * 0.143
-                : screenSize.height * 0.123,
+        height: 90,
         padding: EdgeInsets.only(top: 5.h),
-        margin: EdgeInsets.symmetric(horizontal: 4.w, vertical: 14.h),
-        child: Material(
-          color: Colors.transparent,
-          child: Ink(
-            child: IconButton(
-              splashRadius: 45.r,
-              icon: Column(
-                mainAxisAlignment: ScreenSize.isSmall(context)
-                    ? MainAxisAlignment.spaceBetween
-                    : ScreenSize.isTabletWidth(context)
-                        ? MainAxisAlignment.center
-                        : MainAxisAlignment.spaceAround,
-                children: [
-                  Transform.scale(
-                    scale: ScreenSize.isSmall(context)
-                        ? ScreenSize.isVerySmall(context)
-                            ? 0.65.sp
-                            : 0.75.sp
-                        : ScreenSize.isTabletWidth(context)
-                            ? 0.6.sp
-                            : ScreenSize.isTabletHeight(context)
-                                ? 0.7.sp
-                                : 1.sp,
-                    child: SvgPicture.asset(
-                      'lib/assets/icons/$image.svg',
-                    ),
-                  ),
-                  Text(text ?? '',
-                      style: TextStyle(
-                          fontSize: ScreenSize.isSmall(context)
-                              ? 12.5.sp
-                              : ScreenSize.isTabletWidth(context)
-                                  ? 12.sp
-                                  : ScreenSize.isTabletHeight(context)
-                                      ? 14.5
-                                      : 13.sp,
-                          fontFamily: 'Gotham',
-                          fontWeight: FontWeight.w600,
-                          height: ScreenSize.isTabletWidth(context)
-                              ? 2.5.h
-                              : 1.56.h,
-                          color: Colors.black87)),
-                ],
+        margin: const EdgeInsets.only(left: 7, right: 7),
+        child: IconButton(
+          splashRadius: 45.r,
+          icon: Column(
+            mainAxisAlignment: ScreenSize.isSmall(context)
+                ? MainAxisAlignment.spaceBetween
+                : ScreenSize.isTabletWidth(context)
+                    ? MainAxisAlignment.center
+                    : MainAxisAlignment.spaceAround,
+            children: [
+              SvgPicture.asset(
+                'lib/assets/icons/$image.svg',
               ),
-              onPressed: onTap,
-            ),
+              Text(text ?? '',
+                  style: TextStyle(
+                      fontSize: ScreenSize.isSmall(context)
+                          ? 12.5.sp
+                          : ScreenSize.isTabletWidth(context)
+                              ? 12.sp
+                              : ScreenSize.isTabletHeight(context)
+                                  ? 14.5
+                                  : 13.sp,
+                      fontFamily: 'Gotham',
+                      fontWeight: FontWeight.w600,
+                      color: Colors.black87)),
+            ],
           ),
+          onPressed: onTap,
         ),
         decoration: BoxDecoration(
             color: ColorUtil.tabWhiteColor,

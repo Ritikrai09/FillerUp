@@ -1,8 +1,6 @@
 import 'package:filler_up/colors/color_util.dart';
 import 'package:filler_up/widgets/menu.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../screens/menu_screen.dart';
@@ -35,75 +33,46 @@ class TopAppBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
-    return Column(
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-                width: ScreenSize.isSmall(context)
-                    ? screenSize.width * 0.14
-                    : screenSize.width * 0.18,
+        Container(
+            decoration: const BoxDecoration(
+                shape: BoxShape.circle,),
+            child: SplashIcon(
+                onPressed: onLeadingPressed ?? () {},
+                size: 50,
+                icon:
+                    leading ?? Image.asset('lib/assets/icons/avt-8.png',fit: BoxFit.fill))),
+        isImage
+            ? SplashIcon(
                 height: ScreenSize.isSmall(context)
-                    ? screenSize.height * 0.17
-                    : MediaQuery.of(context).size.height * 0.15,
-                decoration: BoxDecoration(
-                    shape: BoxShape.circle, color: color ?? Colors.transparent),
-                child: SplashIcon(
-                    onPressed: onLeadingPressed ?? () {},
-                    height: ScreenSize.isSmall(context)
-                        ? ScreenSize.isVerySmall(context)
-                            ? screenSize.height * 0.160
-                            : screenSize.height * 0.135
-                        : ScreenSize.isTabletWidth(context)
-                            ? screenSize.height * 0.055
-                            : screenSize.height * 0.10,
-                    icon:
-                        leading ?? Image.asset('lib/assets/icons/avt-8.png'))),
-            isImage
+                    ? ScreenSize.isVerySmall(context)
+                        ? screenSize.height * 0.105
+                        : screenSize.height * 0.095
+                    : ScreenSize.isTabletWidth(context)
+                        ? screenSize.height * 0.085
+                        : screenSize.height * 0.15,
+                onPressed: onImagePressed ??
+                    () {
+                      Navigator.push(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const MenuScreen()));
+                    },
+                icon: image,
+                color: imgColor,
+                materialColor: imgColor)
+            : leading == null
                 ? SplashIcon(
-                    height: ScreenSize.isSmall(context)
-                        ? ScreenSize.isVerySmall(context)
-                            ? screenSize.height * 0.105
-                            : screenSize.height * 0.095
-                        : ScreenSize.isTabletWidth(context)
-                            ? screenSize.height * 0.085
-                            : screenSize.height * 0.15,
-                    onPressed: onImagePressed ??
-                        () {
-                          Navigator.push(
-                              context,
-                              CupertinoPageRoute(
-                                  builder: (context) => const MenuScreen()));
-                        },
-                    icon: image,
-                    color: imgColor,
-                    materialColor: imgColor)
-                : leading == null
-                    ? SplashIcon(
-                        height: ScreenSize.isSmall(context)
-                            ? ScreenSize.isVerySmall(context)
-                                ? screenSize.height * 0.110
-                                : screenSize.height * 0.095
-                            : ScreenSize.isTabletWidth(context)
-                                ? screenSize.height * 0.055
-                                : screenSize.height * 0.10,
-                        icon: SvgPicture.asset(
-                          'lib/assets/icons/arrow.svg',
-                          color: ColorUtil.lightWhiteColor,
-                        ),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        })
-                    : const SizedBox()
-          ],
-        ),
-        SizedBox(
-            height: ScreenSize.isSmall(context)
-                ? ScreenSize.isVerySmall(context)
-                    ? 0.h
-                    : 10.h
-                : 0.h)
+                    icon: SvgPicture.asset(
+                      'lib/assets/icons/arrow.svg',
+                      color: ColorUtil.lightWhiteColor,
+                    ),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    })
+                : const SizedBox()
       ],
     );
   }

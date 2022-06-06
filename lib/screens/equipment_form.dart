@@ -4,7 +4,6 @@ import 'package:filler_up/widgets/inline.dart';
 import 'package:filler_up/widgets/main_box.dart';
 import 'package:filler_up/widgets/text_field.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'terminal.dart';

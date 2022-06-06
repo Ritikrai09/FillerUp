@@ -10,6 +10,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
+import '../config/common_size.dart';
 import '../widgets/screen.dart';
 
 class Login extends StatefulWidget {
@@ -42,8 +43,9 @@ class _LoginState extends State<Login> {
               text: 'Welcome,',
               color: Colors.white,
               subText: 'Please Login to your account',
+              spaceBetweenText: 0,
             ),
-            SizedBox(height: 45.h),
+            SizedBox(height: defaultSize),
             TextFieldWidget(
               controller: nameController,
               hint: 'Email Address',
@@ -91,13 +93,14 @@ class _LoginState extends State<Login> {
             Container(
               margin: EdgeInsets.symmetric(horizontal: 8.w, vertical: 40.h),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: const [
-                  SocialWidget(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children:  [
+                  const SocialWidget(
                       image: 'lib/assets/social/fb.svg',
                       color: Colors.blue,
                       isColored: true),
-                  SocialWidget(image: 'lib/assets/social/Google1.svg')
+                  SizedBox(width: defaultSize*3,),
+                  const SocialWidget(image: 'lib/assets/social/Google1.svg')
                 ],
               ),
             )

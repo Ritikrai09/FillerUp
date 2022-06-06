@@ -25,7 +25,7 @@ class Contact extends StatelessWidget {
             sizeHeight: 10.h,
             iconRadius: 18.r,
             icon: SvgPicture.asset('lib/assets/icons/call.svg',
-                width: 30.w, height: 30.h),
+                width: 30.w, height: 30.h,fit: BoxFit.fill),
             iconBgColor: ColorUtil.primaryOrangeColor,
             text: 'Same Day & After Hours Deliveries',
             isSubText: true,
@@ -88,7 +88,7 @@ class Contact extends StatelessWidget {
               margin: EdgeInsets.only(right: 10.w),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(8.r)),
-                color: Color.fromARGB(5, 34, 142, 154),
+                color: const Color.fromARGB(5, 34, 142, 154),
               ),
               child: SvgPicture.asset(
                 'lib/assets/social/fb.svg',

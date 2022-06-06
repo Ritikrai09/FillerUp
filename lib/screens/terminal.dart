@@ -1,4 +1,5 @@
 import 'package:filler_up/colors/color_util.dart';
+import 'package:filler_up/config/common_size.dart';
 
 import 'package:filler_up/widgets/app_bar.dart';
 import 'package:filler_up/widgets/button.dart';
@@ -45,6 +46,7 @@ class _TerminalState extends State<Terminal> {
         patternBackground: true,
         child: Column(children: [
           const TopAppBar(),
+          SizedBox(height: defaultSize,),
           const InlineWidget(text: 'Equipment / Terminal', isSubText: false),
           DropList(
             height: ScreenSize.isSmall(context)
@@ -55,7 +57,7 @@ class _TerminalState extends State<Terminal> {
                     ? MediaQuery.of(context).size.height * 0.075
                     : MediaQuery.of(context).size.height * 0.064,
             text: 'Quantity',
-            dropList: ['100', '200', '300', '400'],
+            dropList: const ['100', '200', '300', '400'],
           ),
           CheckBox(
             onTap: () {
@@ -65,6 +67,7 @@ class _TerminalState extends State<Terminal> {
             },
             isChecked: isChecked,
           ),
+          SizedBox(height: defaultSize,),
           TextFieldWidget(
               hint: data,
               readOnly: true,
@@ -115,15 +118,11 @@ class _TerminalState extends State<Terminal> {
                   readOnly: true,
                   size: ScreenSize.isSmall(context) ? 14.sp : 14.sp,
                   textAlign: TextAlign.center,
-                  padding: ScreenSize.isSmall(context)
-                      ? EdgeInsets.symmetric(horizontal: 2.w, vertical: 0.h)
-                      : EdgeInsets.symmetric(horizontal: 2.w, vertical: 3.h),
                   width: MediaQuery.of(context).size.width * 0.405,
                   hint: '8 AM to 12 PM',
                   isIcon: false,
                   controller: controller),
               TextFieldWidget(
-                  padding: EdgeInsets.symmetric(horizontal: 2.w, vertical: 3.h),
                   width: MediaQuery.of(context).size.width * 0.405,
                   readOnly: true,
                   size: ScreenSize.isSmall(context) ? 14.sp : 14.sp,
