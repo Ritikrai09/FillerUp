@@ -1,9 +1,10 @@
+import 'package:filler_up/config/common_size.dart';
+import 'package:filler_up/widgets/screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../colors/color_util.dart';
-import 'screen.dart';
 
 // ignore: must_be_immutable
 class DropList extends StatefulWidget {
@@ -34,9 +35,9 @@ class _DropListState extends State<DropList> {
 
   @override
   void initState() {
-    if (this.value != widget.initialValue) {
+    if (value != widget.initialValue) {
       setState(() {
-        this.value = widget.initialValue;
+        value = widget.initialValue;
       });
     }
     super.initState();
@@ -47,8 +48,8 @@ class _DropListState extends State<DropList> {
     return Container(
         width: widget.width ?? 325.w,
         height: widget.height ?? 50.h,
-        padding: EdgeInsets.all(8.sp),
         margin: widget.margin ?? EdgeInsets.symmetric(vertical: 20.h),
+        padding: widget.margin ?? EdgeInsets.symmetric(horizontal:  defaultSize),
         decoration: BoxDecoration(
             color: ColorUtil.lightWhiteColor,
             borderRadius: BorderRadius.all(Radius.circular(16.r))),
@@ -56,14 +57,11 @@ class _DropListState extends State<DropList> {
             ? DropdownButtonHideUnderline(
                 child: DropdownButton<String>(
                   hint: Container(
-                    width: 170.w,
-                    height: 50.h,
-                    padding: EdgeInsets.symmetric(horizontal: 4.w),
                     alignment: Alignment.centerLeft,
                     child: Text(
                       widget.text ?? "How many gallons",
                       style: TextStyle(
-                          fontSize: ScreenSize.isSmall(context) ? 12.sp : 16.sp,
+                          fontSize: defaultSize,
                           fontFamily: 'Gotham',
                           fontWeight: FontWeight.w600,
                           color: Colors.grey[400]),
@@ -77,20 +75,12 @@ class _DropListState extends State<DropList> {
                   items: widget.dropList!.map((String value) {
                     return DropdownMenuItem(
                         value: value,
-                        child: SizedBox(
-                            width: MediaQuery.of(context).size.width * 0.66,
-                            height: 30.h,
-                            child: Text(
-                              value,
-                              style: TextStyle(
-                                  height: ScreenSize.isTabletHeight(context)
-                                      ? 1.7.h
-                                      : 1.h,
-                                  fontSize: ScreenSize.isSmall(context)
-                                      ? 14.sp
-                                      : 16.sp,
-                                  color: ColorUtil.primaryColor),
-                            )));
+                        child: Text(
+                          value,
+                          style: TextStyle(
+                              fontSize: defaultSize,
+                              color: ColorUtil.primaryColor),
+                        ));
                   }).toList(),
                   onChanged: (value) => setState(() {
                     this.value = value ?? widget.initialValue;
@@ -107,7 +97,7 @@ class _DropListState extends State<DropList> {
                     return DropdownMenuItem(
                         value: value,
                         child: SizedBox(
-                          width: 48.w,
+                          width: ScreenSize.isTabletWidth(context)?80:70,
                           child: Row(
                             children: [
                               SvgPicture.asset(

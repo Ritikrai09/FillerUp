@@ -3,7 +3,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 import '../colors/color_util.dart';
-import 'screen.dart';
 
 class SplashIcon extends StatelessWidget {
   final VoidCallback? onPressed;

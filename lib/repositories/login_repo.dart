@@ -47,8 +47,11 @@ class LoginRepo {
         if (userData.success??false) {
 
           box.write(ApiStrings.userData, userData);
+          box.write(ApiStrings.isLogin, true);
 
           UserInformation.userData.value = userData;
+
+          print('---${box.read(ApiStrings.isLogin)}-------');
 
           isSuccess = true;
 

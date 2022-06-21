@@ -1,13 +1,13 @@
 import 'package:filler_up/colors/color_util.dart';
+import 'package:filler_up/config/api_string.dart';
+import 'package:filler_up/config/common_size.dart';
 import 'package:filler_up/screens/boat.dart';
 import 'package:filler_up/screens/equipment.dart';
 import 'package:filler_up/screens/heating.dart';
 import 'package:filler_up/screens/login.dart';
-
 import 'package:filler_up/widgets/app_bar.dart';
 import 'package:filler_up/widgets/inline.dart';
 import 'package:filler_up/widgets/main_box.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -15,10 +15,14 @@ import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 
+import 'config/user_info.dart';
+import 'model/user_data_model.dart';
 import 'widgets/screen.dart';
 
-void main() {
+Future<void> main() async {
+  await GetStorage.init();
   runApp(const MyApp());
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp]);
 }
@@ -52,14 +56,38 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
+  final box = GetStorage();
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
-      await Future.delayed(const Duration(milliseconds: 3000));
-      Navigator.pushReplacement(
-          context, CupertinoPageRoute(builder: (context) => const Login()));
-    });
+    getData();
+
     super.initState();
+  }
+
+  getData() {
+    bool isLogin = box.read(ApiStrings.isLogin) ?? false;
+
+    print(isLogin);
+    print(GetStorage().read(ApiStrings.userData));
+
+    if (isLogin) {
+      Map<String, dynamic> data = box.read(ApiStrings.userData);
+      UserData userData = UserData.fromJson(data);
+      UserInformation.userData.value = userData;
+
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await Future.delayed(const Duration(milliseconds: 3000));
+        Navigator.pushReplacement(context,
+            CupertinoPageRoute(builder: (context) => const MyHomePage()));
+      });
+    } else {
+      WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
+        await Future.delayed(const Duration(milliseconds: 3000));
+        Navigator.pushReplacement(
+            context, CupertinoPageRoute(builder: (context) => const Login()));
+      });
+    }
   }
 
   @override
@@ -77,7 +105,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
-
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -124,8 +151,15 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
           TopAppBar(
               isImage: true,
-              image: SvgPicture.asset('lib/assets/icons/menu.svg')),
+              image: SvgPicture.asset(
+                'lib/assets/icons/menu.svg',
+                height: 20,
+                width: 500,
+                fit: BoxFit.fill,
+              )),
+          SizedBox(height: defaultSize),
           const InlineWidget(),
+          SizedBox(height: defaultSize),
           gridWidget
         ]));
   }
@@ -133,6 +167,7 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget get gridWidget {
     return Expanded(
       child: GridView.builder(
+          padding: EdgeInsets.zero,
           gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 150.w,
               mainAxisExtent: ScreenSize.isSmall(context) ? 210.h : 200.h,

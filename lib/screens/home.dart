@@ -1,3 +1,4 @@
+import 'package:filler_up/config/common_size.dart';
 import 'package:filler_up/widgets/app_bar.dart';
 import 'package:filler_up/widgets/button.dart';
 import 'package:filler_up/widgets/checkbox.dart';
@@ -23,6 +24,7 @@ class _HomeState extends State<Home> {
       child: Column(
         children: [
           const TopAppBar(),
+          SizedBox(height: defaultSize,),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -46,6 +48,7 @@ class _HomeState extends State<Home> {
             },
             isChecked: isChecked,
           ),
+          SizedBox(height: defaultSize,),
           ButtonWidget(
             onPressed: () {},
             text: 'Next',

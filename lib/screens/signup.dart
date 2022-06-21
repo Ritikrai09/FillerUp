@@ -1,3 +1,4 @@
+import 'package:country_picker/country_picker.dart';
 import 'package:filler_up/config/validator.dart';
 import 'package:filler_up/controller/signup_controller.dart';
 import 'package:filler_up/screens/login.dart';
@@ -9,14 +10,24 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 
 import '../colors/color_util.dart';
+import '../config/common_size.dart';
 import '../widgets/button.dart';
 import '../widgets/screen.dart';
 import '../widgets/text_field.dart';
 
-class SignupScreen extends StatelessWidget {
-  SignupScreen({Key? key}) : super(key: key);
+class SignupScreen extends StatefulWidget {
+  const SignupScreen({Key? key}) : super(key: key);
 
+  @override
+  State<SignupScreen> createState() => _SignupScreenState();
+}
+
+class _SignupScreenState extends State<SignupScreen> {
   final SignupController _signupController = Get.put(SignupController());
+
+  String countryCode= '';
+
+  String countryImage= '';
 
   @override
   Widget build(BuildContext context) {
@@ -59,15 +70,79 @@ class SignupScreen extends StatelessWidget {
                     ? 12.sp
                     : 16.sp,
               ),
-              TextFieldWidget(
-                controller: _signupController.numberController,
-                hint: 'Mobile Number',
-                keyboard: TextInputType.number,
-                size: ScreenSize.isTabletWidth(context)
-                    ? 12.sp
-                    : ScreenSize.isVerySmall(context)
-                    ? 12.sp
-                    : 16.sp,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  GestureDetector(
+                    onTap: () {
+                      print('on tap');
+
+                      showCountryPicker(
+                        context: context,
+                        favorite: <String>['US'],
+                        showPhoneCode: true,
+                        onSelect: (Country country) {
+                          setState(() {
+                            countryCode = country.phoneCode;
+                            countryImage = country.flagEmoji;
+                          });
+                          print('Select country: ${country.displayName}');
+                        },
+                        // Optional. Sets the theme for the country list picker.
+                        countryListTheme: CountryListThemeData(
+                          // Optional. Sets the border radius for the bottomsheet.
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(40.0),
+                            topRight: Radius.circular(40.0),
+                          ),
+                          // Optional. Styles the search field.
+                          inputDecoration: InputDecoration(
+                            labelText: 'Search',
+                            hintText: 'Start typing to search',
+                            prefixIcon: const Icon(Icons.search),
+                            border: OutlineInputBorder(
+                              borderSide: BorderSide(
+                                color: const Color(0xFF8C98A8).withOpacity(0.2),
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: Container(
+                      height: 55,
+                      margin: const EdgeInsets.only(left: 25),
+                      alignment: Alignment.center,
+                      padding: const EdgeInsets.all(15),
+                      decoration: BoxDecoration(
+                          color: Colors.white,
+                          borderRadius: BorderRadius.circular(15)
+                      ),
+                      child:countryCode.isNotEmpty? Row(
+                        children: [
+                          Text('+$countryCode'),
+                          const SizedBox(width: 10),
+                          Text(countryImage),
+                        ],
+                      ):const Text('select code'),
+                    ),
+                  ),
+                  SizedBox(width: defaultSize),
+                  Expanded(
+                    child: TextFieldWidget(
+                      controller: _signupController.numberController,
+                      hint: 'Mobile Number',
+                      keyboard: TextInputType.number,
+                      size: ScreenSize.isTabletWidth(context)
+                          ? 12.sp
+                          : ScreenSize.isVerySmall(context)
+                          ? 12.sp
+                          : 16.sp,
+                    ),
+                  ),
+                  const SizedBox(width: 30),
+                ],
               ),
               Obx(() => TextFieldWidget(
                   controller: _signupController.passwordController,
@@ -117,7 +192,7 @@ class SignupScreen extends StatelessWidget {
                   onPressed: () {
                     FocusScope.of(context).unfocus();
                     if(validate()){
-                     _signupController.doSignup();
+                     _signupController.doSignup(countryCode);
                     }
                   },
                   text: 'Sign up',
@@ -176,6 +251,9 @@ class SignupScreen extends StatelessWidget {
       return false;
     }else if(!_signupController.isCheck.value){
       EasyLoading.showError('Agree tearms and condition');
+      return false;
+    }else if(countryCode.isEmpty){
+      EasyLoading.showError('select country code');
       return false;
     }else{
       return true;

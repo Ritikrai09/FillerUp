@@ -19,6 +19,8 @@ class LoginController extends GetxController {
         fcmToken: '');
 
     if(isSuccess){
+      numberController.clear();
+      passwordController.clear();
       Get.offAll( const MyHomePage());
     }
   }

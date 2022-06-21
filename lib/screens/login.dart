@@ -11,7 +11,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-
 import '../widgets/screen.dart';
 
 class Login extends StatefulWidget {
@@ -42,6 +41,7 @@ class _LoginState extends State<Login> {
                 controller: _loginController.numberController,
                 hint: 'Email phone number',
                 keyboard: TextInputType.number,
+
                 size: ScreenSize.isTabletWidth(context)
                     ? 12.sp
                     : ScreenSize.isVerySmall(context)
@@ -70,18 +70,8 @@ class _LoginState extends State<Login> {
               ButtonWidget(
                 onPressed: () {
                   FocusScope.of(context).unfocus();
-                  if (_loginController.numberController.text.length == 10) {
                     _loginController.doLogin();
-                  } else {
-                    EasyLoading.showError('Enter Valid number');
-                  }
 
-                  // Navigator.push(
-                  //     context,
-                  //     CupertinoPageRoute(
-                  //         builder: (context) => const MyHomePage(
-                  //               title: 'Filler Up',
-                  //             )));
                 },
                 text: 'Login',
                 style: TextStyle(

@@ -21,20 +21,18 @@ class SignupRepo {
       ApiStrings.name : name,
       ApiStrings.phone : number,
       ApiStrings.email : email,
-      ApiStrings.password : password,
-      ApiStrings.fcmToken : fcmToken,
-      ApiStrings.deviceType : deviceType,
+      ApiStrings.password : password
     };
 
     try {
       var url = Uri.parse(Urls.signupUrl);
       var response = await http.post(url, body: _body);
       print('Response status: ${response.statusCode}');
-      print('Response body: ${response.body}');
 
       EasyLoading.dismiss();
 
       if(response.statusCode==200){
+        print(response.body);
         isSuccess = true;
       }else{
         EasyLoading.showError('Something went wrong.\nPlease try after Sometimes');
