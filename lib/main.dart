@@ -11,8 +11,10 @@ import 'package:filler_up/widgets/main_box.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:get/get.dart';
 
 import 'widgets/screen.dart';
 
@@ -29,7 +31,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return ScreenUtilInit(
         designSize: const Size(375, 812),
-        builder: (context, _) => MaterialApp(
+        builder: (context, _) => GetMaterialApp(
               title: 'Filler Up',
               debugShowCheckedModeBanner: false,
               theme: ThemeData(
@@ -37,6 +39,7 @@ class MyApp extends StatelessWidget {
                 primarySwatch: Colors.blue,
               ),
               home: const SplashScreen(),
+              builder: EasyLoading.init(),
             ));
   }
 }
@@ -51,7 +54,7 @@ class SplashScreen extends StatefulWidget {
 class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
-    WidgetsBinding.instance?.addPostFrameCallback((timeStamp) async {
+    WidgetsBinding.instance.addPostFrameCallback((timeStamp) async {
       await Future.delayed(const Duration(milliseconds: 3000));
       Navigator.pushReplacement(
           context, CupertinoPageRoute(builder: (context) => const Login()));
@@ -73,9 +76,8 @@ class _SplashScreenState extends State<SplashScreen> {
 }
 
 class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
+  const MyHomePage({Key? key}) : super(key: key);
 
-  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -91,6 +93,7 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   int isSelected = -1;
+
   @override
   void initState() {
     super.initState();

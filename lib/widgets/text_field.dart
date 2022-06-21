@@ -90,7 +90,7 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
                       : widget.size ?? 14.sp,
                   height: ScreenSize.isVerySmall(context) ? 2.h : 1.h,
                   fontFamily: 'Gotham-Bold',
-                  color: Colors.grey[400]),
+                  ),
               keyboardType: widget.keyboard ?? TextInputType.text,
               decoration: InputDecoration(
                   contentPadding: widget.padding ??
