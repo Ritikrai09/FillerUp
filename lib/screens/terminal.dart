@@ -1,14 +1,14 @@
 import 'package:filler_up/colors/color_util.dart';
 import 'package:filler_up/config/common_size.dart';
-
+import 'package:filler_up/screens/add_card_screen.dart';
 import 'package:filler_up/widgets/app_bar.dart';
 import 'package:filler_up/widgets/button.dart';
-
 import 'package:filler_up/widgets/text_field.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+
 import '../widgets/checkbox.dart';
 import '../widgets/dropdown.dart';
 import '../widgets/inline.dart';
@@ -46,7 +46,9 @@ class _TerminalState extends State<Terminal> {
         patternBackground: true,
         child: Column(children: [
           const TopAppBar(),
-          SizedBox(height: defaultSize,),
+          SizedBox(
+            height: defaultSize,
+          ),
           const InlineWidget(text: 'Equipment / Terminal', isSubText: false),
           DropList(
             height: ScreenSize.isSmall(context)
@@ -67,7 +69,9 @@ class _TerminalState extends State<Terminal> {
             },
             isChecked: isChecked,
           ),
-          SizedBox(height: defaultSize,),
+          SizedBox(
+            height: defaultSize,
+          ),
           TextFieldWidget(
               hint: data,
               readOnly: true,
@@ -76,8 +80,8 @@ class _TerminalState extends State<Terminal> {
                     DateTime? pickDate = await showDatePicker(
                         context: context,
                         initialDate: DateTime.now(),
-                        firstDate: DateTime(
-                            2000), //DateTime.now() - not to allow to choose before today.
+                        firstDate: DateTime(2000),
+                        //DateTime.now() - not to allow to choose before today.
                         lastDate: DateTime(2101),
                         builder: (context, child) {
                           return Theme(
@@ -133,7 +137,12 @@ class _TerminalState extends State<Terminal> {
             ],
           ),
           ButtonWidget(
-            onPressed: () {},
+            onPressed: () {
+              Navigator.push(
+                  context,
+                  CupertinoPageRoute(
+                      builder: (context) => AddCardScreen()));
+            },
             text: 'Next',
             style: const TextStyle(
               fontWeight: FontWeight.w600,

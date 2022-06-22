@@ -38,8 +38,9 @@ class _LoginState extends State<Login> {
               ),
               SizedBox(height: 45.h),
               TextFieldWidget(
+
                 controller: _loginController.numberController,
-                hint: 'Email phone number',
+                hint: 'Enter phone number',
                 keyboard: TextInputType.number,
 
                 size: ScreenSize.isTabletWidth(context)

@@ -17,6 +17,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get_storage/get_storage.dart';
+
 import '../config/api_string.dart';
 import '../config/user_info.dart';
 import '../widgets/menu.dart';
@@ -32,12 +33,14 @@ class _MenuScreenState extends State<MenuScreen> {
   final box = GetStorage();
 
   final List<String> details = [
+    'Order History',
     'Message',
     'Settings',
     'Terms of Service',
     'Logout'
   ];
   final List<String> icons = [
+    'history.svg',
     'message.svg',
     'settings.svg',
     'terms.svg',
@@ -49,6 +52,7 @@ class _MenuScreenState extends State<MenuScreen> {
     const NotificationScreen(),
     const Query(),
   ];
+
   @override
   Widget build(BuildContext context) {
     var screenSize = MediaQuery.of(context).size;
@@ -75,50 +79,58 @@ class _MenuScreenState extends State<MenuScreen> {
             },
             imgColor: ColorUtil.primaryOrangeColor,
           ),
-          ValueListenableBuilder(valueListenable:UserInformation.userData, builder: (context, value, child){
-            return InlineWidget(
-                text: 'Hi ${UserInformation.userData.value.data?.name}',
-                textStyle: TextStyle(
-                    fontSize: ScreenSize.isSmall(context)
-                        ? ScreenSize.isSmall(context)
-                        ? 20.sp
-                        : 21.sp
-                        : ScreenSize.isTabletWidth(context)
-                        ? 15.sp
-                        : 22.sp,
-                    fontFamily: 'Gotham-Bold',
-                    color: Colors.white),
-                isSubText: false);
-          }),
-          SizedBox(
-            height: ScreenSize.isSmall(context)
-                ? 5.h
-                : ScreenSize.isTabletWidth(context)
-                    ? 0.h
-                    : 15.h,
-          ),
-          Row(
-            children: [
-              ValueListenableBuilder(valueListenable:UserInformation.userData, builder: (context, value, child){
-                return SplashIcon(
-                  height: ScreenSize.isSmall(context)
-                      ? MediaQuery.of(context).size.height * 0.16
-                      : 76.sp,
-                  size: ScreenSize.isSmall(context)
-                      ? 90.sp
-                      : ScreenSize.isTabletWidth(context)
-                      ? 60.sp
-                      : 100.sp,
-                  icon:  CachedNetworkImage(
-                    imageUrl: '${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}',
-                    placeholder: (context, url) =>
-                    const CircularProgressIndicator(),
-                    errorWidget: (context, url, error) => Image.asset(
-                        'lib/assets/icons/avt-8.png',
-                        fit: BoxFit.fill),
-                  ),
-                );
+          ValueListenableBuilder(
+              valueListenable: UserInformation.userData,
+              builder: (context, value, child) {
+                return InlineWidget(
+                    text: 'Hi ${UserInformation.userData.value.data?.name}',
+                    textStyle: TextStyle(
+                        fontSize: ScreenSize.isSmall(context)
+                            ? ScreenSize.isSmall(context)
+                                ? 20.sp
+                                : 21.sp
+                            : ScreenSize.isTabletWidth(context)
+                                ? 15.sp
+                                : 22.sp,
+                        fontFamily: 'Gotham-Bold',
+                        color: Colors.white),
+                    isSubText: false);
               }),
+          SizedBox(
+            height: ScreenSize.isSmall(context)
+                ? 5.h
+                : ScreenSize.isTabletWidth(context)
+                    ? 0.h
+                    : 15.h,
+          ),
+          Row(
+            children: [
+              ValueListenableBuilder(
+                  valueListenable: UserInformation.userData,
+                  builder: (context, value, child) {
+                    return SplashIcon(
+                      height: ScreenSize.isSmall(context)
+                          ? MediaQuery.of(context).size.height * 0.16
+                          : 76.sp,
+                      size: ScreenSize.isSmall(context)
+                          ? 90.sp
+                          : ScreenSize.isTabletWidth(context)
+                              ? 60.sp
+                              : 100.sp,
+                      icon: UserInformation.userData.value.data!.image != ""
+                          ? CachedNetworkImage(
+                              imageUrl:
+                                  '${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}',
+                              placeholder: (context, url) =>
+                                  const CircularProgressIndicator(),
+                              errorWidget: (context, url, error) => Image.asset(
+                                  'lib/assets/icons/avt-8.png',
+                                  fit: BoxFit.fill),
+                            )
+                          : Image.asset('lib/assets/icons/avt-8.png',
+                              fit: BoxFit.fill),
+                    );
+                  }),
             ],
           ),
           SizedBox(
@@ -128,59 +140,62 @@ class _MenuScreenState extends State<MenuScreen> {
                     ? 0.h
                     : 15.h,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              boxWidget(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const Contact()));
-                  },
-                  text: 'Help',
-                  image: 'help'),
-              boxWidget(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const Order()));
-                  },
-                  text: 'wallet',
-                  image: 'wallet'),
-              boxWidget(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        CupertinoPageRoute(
-                            builder: (context) => const Order()));
-                  },
-                  text: 'Trips',
-                  image: 'trips')
-            ],
+          // Row(
+          //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //   children: [
+          //     boxWidget(
+          //         onTap: () {
+          //           Navigator.push(
+          //               context,
+          //               CupertinoPageRoute(
+          //                   builder: (context) => const Contact()));
+          //         },
+          //         text: 'Help',
+          //         image: 'help'),
+          //     boxWidget(
+          //         onTap: () {
+          //           Navigator.push(
+          //               context,
+          //               CupertinoPageRoute(
+          //                   builder: (context) => const Order()));
+          //         },
+          //         text: 'wallet',
+          //         image: 'wallet'),
+          //     boxWidget(
+          //         onTap: () {
+          //           Navigator.push(
+          //               context,
+          //               CupertinoPageRoute(
+          //                   builder: (context) => const Order()));
+          //         },
+          //         text: 'Trips',
+          //         image: 'trips')
+          //   ],
+          // ),
+          SizedBox(
+            height: defaultSize,
           ),
-          SizedBox(height: defaultSize,),
           Expanded(
             child: ListView.builder(
-              padding: EdgeInsets.zero,
+                padding: EdgeInsets.zero,
                 itemCount: icons.length,
                 itemBuilder: (context, index) {
                   return ListWidget(
                     onTap: () {
-
-                      if(index!=3){
+                      if (index != 4) {
                         Navigator.push(
                             context,
                             CupertinoPageRoute(
                                 builder: (context) => screens[index]));
-                      }else{
+                      } else {
                         box.remove(ApiStrings.userData);
                         box.remove(ApiStrings.isLogin);
-                        Navigator.pushAndRemoveUntil(context, CupertinoPageRoute(
-                            builder: (context) => const Login()), (route) => false);
+                        Navigator.pushAndRemoveUntil(
+                            context,
+                            CupertinoPageRoute(
+                                builder: (context) => const Login()),
+                            (route) => false);
                       }
-
                     },
                     iconWidth: ScreenSize.isVerySmallWidth(context)
                         ? screenSize.width * 0.105
@@ -198,8 +213,10 @@ class _MenuScreenState extends State<MenuScreen> {
                                 : screenSize.height * 0.065,
                     icon: Padding(
                       padding: EdgeInsets.only(left: 5.w),
-                      child:
-                          SvgPicture.asset('lib/assets/icons/${icons[index]}',height: 20,width: 20),
+                      child: SvgPicture.asset(
+                          'lib/assets/icons/${icons[index]}',
+                          height: 22,
+                          width: 22,color: Colors.white,),
                     ),
                     text: details[index],
                   );

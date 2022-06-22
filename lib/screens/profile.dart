@@ -111,16 +111,18 @@ class _ProfileState extends State<Profile> {
                                       width: 200,
                                       child: Image.file(
                                           File(imagePath)))
-                                      : CachedNetworkImage(
+                                      : UserInformation.userData.value.data!.image != ""
+                                      ? CachedNetworkImage(
                                     imageUrl:
                                     '${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}',
                                     placeholder: (context, url) =>
                                     const CircularProgressIndicator(),
                                     errorWidget: (context, url, error) =>
-                                        Image.asset(
-                                            'lib/assets/icons/avt-8.png',
+                                        Image.asset('lib/assets/icons/avt-8.png',
                                             fit: BoxFit.fill),
-                                  ),
+                                  )
+                                      : Image.asset('lib/assets/icons/avt-8.png',
+                                      fit: BoxFit.fill),
                                 ),
                                 Positioned(
                                   bottom:

@@ -1,6 +1,7 @@
 import 'package:filler_up/colors/color_util.dart';
 import 'package:filler_up/widgets/screen.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class TextFieldWidget extends StatefulWidget {
@@ -14,8 +15,10 @@ class TextFieldWidget extends StatefulWidget {
   final EdgeInsetsGeometry? margin;
   final double? size, width, height;
   final TextInputType? keyboard;
+  final List<TextInputFormatter>? inputFormatters;
 
   final EdgeInsetsGeometry? padding;
+
   const TextFieldWidget({
     Key? key,
     this.size,
@@ -33,6 +36,7 @@ class TextFieldWidget extends StatefulWidget {
     this.height,
     this.readOnly = false,
     this.hide = false,
+    this.inputFormatters,
   }) : super(key: key);
 
   @override
@@ -85,13 +89,13 @@ class _TextFieldWidgetState extends State<TextFieldWidget> {
               controller: widget.controller,
               obscureText: widget.hide,
               style: TextStyle(
-                  fontSize: ScreenSize.isTabletWidth(context)
-                      ? 16.sp
-                      : widget.size ?? 14.sp,
-                  height: ScreenSize.isVerySmall(context) ? 2.h : 1.h,
-                  fontFamily: 'Gotham-Bold',
-                  ),
-
+                fontSize: ScreenSize.isTabletWidth(context)
+                    ? 16.sp
+                    : widget.size ?? 14.sp,
+                height: ScreenSize.isVerySmall(context) ? 2.h : 1.h,
+                fontFamily: 'Gotham-Bold',
+              ),
+              inputFormatters: widget.inputFormatters,
               keyboardType: widget.keyboard ?? TextInputType.text,
               decoration: InputDecoration(
                   contentPadding: widget.padding ??

@@ -44,7 +44,6 @@ class TopAppBar extends StatelessWidget {
         ValueListenableBuilder(
             valueListenable: UserInformation.userData,
             builder: (context, value, child) {
-              print('${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}');
               return Container(
                   decoration: const BoxDecoration(
                     shape: BoxShape.circle,
@@ -52,15 +51,20 @@ class TopAppBar extends StatelessWidget {
                   child: SplashIcon(
                     onPressed: onLeadingPressed ?? () {},
                     size: 50,
-                    icon: leading ??
-                        CachedNetworkImage(
-                          imageUrl: '${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}',
-                          placeholder: (context, url) =>
-                              const CircularProgressIndicator(),
-                          errorWidget: (context, url, error) => Image.asset(
-                              'lib/assets/icons/avt-8.png',
-                              fit: BoxFit.fill),
-                        ),
+                    icon: leading != null
+                        ? const SizedBox()
+                        : UserInformation.userData.value.data!.image != ""
+                            ? CachedNetworkImage(
+                                imageUrl:
+                                    '${ApiStrings.prefixImageUrl}${UserInformation.userData.value.data!.image!}',
+                                placeholder: (context, url) =>
+                                    const CircularProgressIndicator(),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset('lib/assets/icons/avt-8.png',
+                                        fit: BoxFit.fill),
+                              )
+                            : Image.asset('lib/assets/icons/avt-8.png',
+                                fit: BoxFit.fill),
                   ));
             }),
         isImage
